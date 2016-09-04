@@ -13,20 +13,27 @@
 	<body>
 		
 		<input type="button" id="enableSelectionButton" value="SELECT" onclick="enableAreaSelection('enableSelectionButton')">
-		<input type="button" value="MOVE" onclick="moveAreaSelection()">
+		<input type="button" id="enableMovementButton" value="MOVE" onclick="enableAreaMovement('enableMovementButton')">
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
 			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
 			
 			var selectionEnabled = false; //flag value
-    
+    	var movementEnabled = false;
+    	
 	    function enableAreaSelection(buttonID) {
-	      selectionEnabled = selectionEnabled ? false : true; //toggle flag
-	      
+	    	if(!movementEnabled) {
+		      selectionEnabled = selectionEnabled ? false : true; //toggle flag
+		      //activate the button (toggling)
+	    	}
 	    }
-	    function moveAreaSelection() {
-	    	//move image flag on
+	    function enableAreaMovement(buttonID) {
+	    	if(!selectionEnabled) {
+	    		movementEnabled = movementEnabled ? false : true; //toggle flag
+	    		//activate the button (toggling)
+	    		window.alert("movementEnabled: "+movementEnabled);
+	    	}
 	    }
 	    
 			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0, boxWidth = 0, boxHeight = 0;
