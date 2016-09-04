@@ -12,19 +12,24 @@
 
 	<body>
 		
-		<input type="button" value="TOGGLE" onclick="enableAreaSelection()">
+		<input type="button" id="enableSelectionButton" value="SELECT" onclick="enableAreaSelection('enableSelectionButton')">
+		<input type="button" value="MOVE" onclick="moveAreaSelection()">
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
 			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
 			
-			var enabled = false; //flag value
+			var selectionEnabled = false; //flag value
     
-	    function enableAreaSelection() {
-	      enabled = enabled ? false : true;
+	    function enableAreaSelection(buttonID) {
+	      selectionEnabled = selectionEnabled ? false : true; //toggle flag
+	      
+	    }
+	    function moveAreaSelection() {
+	    	//move image flag on
 	    }
 	    
-			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0, boxWidth = 0, boxHeight = 0;
 	    function setBox() { //Resize the box
         var x3 = Math.min(x1,x2);
         var x4 = Math.max(x1,x2);
@@ -32,12 +37,14 @@
         var y4 = Math.max(y1,y2);
         box.style.left = x3 + 'px';
         box.style.top = y3 + 'px';
-        box.style.width = x4 - x3 + 'px';
-        box.style.height = y4 - y3 + 'px';
+        boxWidth = x4 - x3;
+        boxHeight = y4 - y3;
+        box.style.width = boxWidth + 'px';
+        box.style.height = boxHeight + 'px';
 	    }
     
       onmousedown = function(e) {
-      	if(enabled) {
+      	if(selectionEnabled) {
 	        box.hidden = 0;
 	        x1 = e.clientX;
 	        y1 = e.clientY;
@@ -45,24 +52,28 @@
       	}
       };
       onmousemove = function(e) {
-      	if(enabled) {
+      	if(selectionEnabled) {
 	        x2 = e.clientX;
 	        y2 = e.clientY;
 	        setBox();
       	}
       };
       onmouseup = function(e) {
-        if(enabled) {
+        if(selectionEnabled) {
         	box.hidden = 1;
-        	var img_area = document.getElementById("imgReady"+imgID);
-        	img_area.style.left = box.style.left;
-        	img_area.style.top = box.style.top;
-        	img_area.style.width = box.style.width;
-        	img_area.style.height = box.style.height;
-        	img_area.hidden = 0;
-        	enabled = false;
-        	imgID++;
-        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
+        	
+        	if(boxWidth > 30 && boxHeight > 30) {
+	        	var img_area = document.getElementById("imgReady"+imgID);
+	        	img_area.style.left = box.style.left;
+	        	img_area.style.top = box.style.top;
+	        	img_area.style.width = box.style.width;
+	        	img_area.style.height = box.style.height;
+	        	img_area.hidden = 0;
+	        	selectionEnabled = false;
+	        	imgID++;
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
+        	}
+        	
         }
       };
     
