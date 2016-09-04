@@ -10,34 +10,46 @@
 
 	<body>
 		
+		<input type="button" value="TOGGLE" onclick="enableAreaSelection()">
 		<div hidden id="selection" style="background-color:#dddddd; position:absolute"></div>
 		
 		<script>
-			var div = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-	    function setBox() {
+		
+			var enabled = false; //flag value
+    
+	    function enableAreaSelection() {
+	      enabled = enabled ? false : true;
+	    }
+	    
+			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+	    function setBox() { //Resize the box
         var x3 = Math.min(x1,x2);
         var x4 = Math.max(x1,x2);
         var y3 = Math.min(y1,y2);
         var y4 = Math.max(y1,y2);
-        div.style.left = x3 + 'px';
-        div.style.top = y3 + 'px';
-        div.style.width = x4 - x3 + 'px';
-        div.style.height = y4 - y3 + 'px';
+        box.style.left = x3 + 'px';
+        box.style.top = y3 + 'px';
+        box.style.width = x4 - x3 + 'px';
+        box.style.height = y4 - y3 + 'px';
 	    }
     
       onmousedown = function(e) {
-        div.hidden = 0;
-        x1 = e.clientX;
-        y1 = e.clientY;
-        setBox();
+      	if(enabled) {
+	        box.hidden = 0;
+	        x1 = e.clientX;
+	        y1 = e.clientY;
+	        setBox();
+      	}
       };
       onmousemove = function(e) {
-        x2 = e.clientX;
-        y2 = e.clientY;
-        setBox();
+      	if(enabled) {
+	        x2 = e.clientX;
+	        y2 = e.clientY;
+	        setBox();
+      	}
       };
       onmouseup = function(e) {
-        div.hidden = 1;
+        if(enabled) box.hidden = 1;
       };
     
 		</script>
