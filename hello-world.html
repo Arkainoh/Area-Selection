@@ -14,13 +14,9 @@
 		
 		<input type="button" value="TOGGLE" onclick="enableAreaSelection()">
 		<div class="AreaSelection"></div>
-		<!--
-		<div hidden id="selection" style="background-color:#dddddd; position:absolute"></div>
-		<img hidden id="imgReady" style="position:absolute" src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI8euqYJCLfs-sx2ohExKrwDYQu7mYeiWljzIxPWeZZmLy23nK"/>
-		-->
 		<script>
-			
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady' style='position:absolute' src='https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQI8euqYJCLfs-sx2ohExKrwDYQu7mYeiWljzIxPWeZZmLy23nK'/>");
+			var imgID = 1;
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
 			
 			var enabled = false; //flag value
     
@@ -58,13 +54,15 @@
       onmouseup = function(e) {
         if(enabled) {
         	box.hidden = 1;
-        	var img_area = document.getElementById('imgReady');
+        	var img_area = document.getElementById("imgReady"+imgID);
         	img_area.style.left = box.style.left;
         	img_area.style.top = box.style.top;
         	img_area.style.width = box.style.width;
         	img_area.style.height = box.style.height;
         	img_area.hidden = 0;
         	enabled = false;
+        	imgID++;
+        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
         }
       };
     
