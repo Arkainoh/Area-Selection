@@ -17,7 +17,7 @@
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onclick='setCurrentElement(this)'/>");
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmouseover='setCurrentElement(this)'/>");
   		
 			function onDragEnter(event) {
       	//if (event.dataTransfer.dropEffect == "move")
@@ -94,7 +94,7 @@
 			
 			function setCurrentElement(element) {
 			  currentElement = element
-				//window.alert(element.id);
+				window.alert(element.id);
 			}
 			
 	    function setBox() { //Resize the box
@@ -151,7 +151,7 @@
 	        	img_area.hidden = 0;
 	        	selectionEnabled = false;
 	        	imgID++;
-	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onclick='setCurrentElement(this)'/>"); // Create a new empty image
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmouseover='setCurrentElement(this)'/>"); // Create a new empty image
         	}
         } else if(movementEnabled) {
         	
