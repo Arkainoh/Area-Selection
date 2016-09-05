@@ -18,7 +18,7 @@
 		<script>
 			var imgID = 1;
 			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)'/>");
-			
+  		
 			function onDragEnter(event) {
       	//if (event.dataTransfer.dropEffect == "move")
         event.preventDefault();
@@ -28,7 +28,50 @@
 		    //if (event.dataTransfer.dropEffect == "move")
 		    event.preventDefault();
 		  }
-			
+			// onDrop start
+			function onDrop(event) {                                
+		    var file = event.dataTransfer.files[0];      
+
+		    var dropSpot = event.target;
+		    
+		    var imageType = /image.*/;
+		    var textType = /text.*/;
+		    var isImage = false;
+		    var isText = false;
+		    if(file.type.match(imageType)){
+		      isImage = true; 
+		    }
+		    else if(file.type.match(textType)){
+		      isText = true;
+		    } 
+		             
+		    var reader = new FileReader();    
+		    
+		    reader.onload = (function(aFile) {
+		      return function(e) {         
+		        var result = e.target.result;  
+		        if(isImage) {
+		          dropSpot.src = result;
+		        } else if(isText) {
+		        	 //dropSpot.src = null;
+		           //dropSpot.innerHTML = result;
+		           //dropSpot.style.display = 'block';
+		           //dropSpot.style.overflow = 'hidden';
+		           window.alert('You dragged a text file!');
+		        } else {
+		        	window.alert('Only allows image or text file.');
+		        }
+		      };
+		    })(file);
+		      
+		    if(isImage) { reader.readAsDataURL(file); }
+		    else { reader.readAsText(file,"EUC-KR"); }
+			    event.stopPropagation();
+			    event.preventDefault();
+	    }                      
+  		// onDrop end
+  		//dropImage.addEventListener("load", function(e) { }, true);
+			//
 			var selectionEnabled = false; //flag value
     	var movementEnabled = false;
     	
