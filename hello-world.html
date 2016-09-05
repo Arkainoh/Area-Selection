@@ -17,7 +17,7 @@
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmouseover='setCurrentElement(this)'/>");
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false'/>");
   		
 			function onDragEnter(event) {
       	//if (event.dataTransfer.dropEffect == "move")
@@ -52,6 +52,7 @@
 		        var result = e.target.result;  
 		        if(isImage) {
 		          dropSpot.src = result;
+		          dropSpot.ondragstart="return false";
 		        } else if(isText) {
 		        	 //dropSpot.src = null;
 		           //dropSpot.innerHTML = result;
@@ -74,6 +75,7 @@
 			//
 			var selectionEnabled = false; //flag value
     	var movementEnabled = false;
+    	var isDragging = false; //check if the user is dragging something
     	
 	    function enableAreaSelection(buttonID) {
 	    	if(!movementEnabled) {
@@ -90,11 +92,18 @@
 	    }
 	    
 			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0, boxWidth = 0, boxHeight = 0;
-			var currentElement;
+			var currentElement = null;
 			
 			function setCurrentElement(element) {
-			  currentElement = element
-				window.alert(element.id);
+				
+				if(!isDragging && movementEnabled) {
+					if(element != null);
+					else window.alert('current is null');
+				  currentElement = element;
+					
+					//x1 = 0;
+					//y1 = 0; //이부분을 마우스 포인터의 위치로 바꾸자
+				}
 			}
 			
 	    function setBox() { //Resize the box
@@ -114,16 +123,30 @@
     		var x3 = x2 - x1; //difference (delta x)
     		var y3 = y2 - y1; //difference (delta y)
     		
+    		//window.alert("startpoint: " + x1 +"," +y1 +"\nnewpoint: "+x2 +"," +y2);
+    		//var leftValue = currentElement.style.left.replace('px','');
+    		var leftValue = parseInt(currentElement.style.left);
+    		var topValue = parseInt(currentElement.style.top);
+    		
+    		leftValue += x3;
+    		topValue += y3;
+    		
+    		currentElement.style.left = leftValue + 'px';
+    		currentElement.style.top = topValue + 'px';
     	}
       onmousedown = function(e) {
+      	isDragging = true; //hold
       	if(selectionEnabled) {
 	        box.hidden = 0;
 	        x1 = e.clientX;
 	        y1 = e.clientY;
 	        setBox();
+	        
       	} else if(movementEnabled) {
       		x1 = e.clientX;
       		y1 = e.clientY;
+      		//x2 = x1;
+      		//y2 = y1;
       		moveArea();
       	}
       };
@@ -139,6 +162,8 @@
       	}
       };
       onmouseup = function(e) {
+      	isDragging = false; //release
+      	//window.alert('mouseup!');
         if(selectionEnabled) {
         	box.hidden = 1;
         	
@@ -151,10 +176,10 @@
 	        	img_area.hidden = 0;
 	        	selectionEnabled = false;
 	        	imgID++;
-	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmouseover='setCurrentElement(this)'/>"); // Create a new empty image
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false'/>"); // Create a new empty image
         	}
         } else if(movementEnabled) {
-        	
+        	currentElement = null;
         }
       };
     
