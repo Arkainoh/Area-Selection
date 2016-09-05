@@ -17,7 +17,17 @@
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)'/>");
+			
+			function onDragEnter(event) {
+      	//if (event.dataTransfer.dropEffect == "move")
+        event.preventDefault();
+		  }
+		  
+		  function onDragOver(event) {
+		    //if (event.dataTransfer.dropEffect == "move")
+		    event.preventDefault();
+		  }
 			
 			var selectionEnabled = false; //flag value
     	var movementEnabled = false;
@@ -78,9 +88,8 @@
 	        	img_area.hidden = 0;
 	        	selectionEnabled = false;
 	        	imgID++;
-	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg'/>");
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)'/>"); // Create a new empty image
         	}
-        	
         }
       };
     

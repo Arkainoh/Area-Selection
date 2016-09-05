@@ -22,17 +22,17 @@
   var dropBox = document.getElementById("dropbox");          
   var dropImage = document.createElement("img");   
           
-  function onDragEnter(event){    
+  function onDragEnter(event) {    
       //if (event.dataTransfer.dropEffect == "move")
-        event.preventDefault();                    
-   }    
+        event.preventDefault();
+  }    
     
-  function onDragOver(event){
+  function onDragOver(event) {
     //if (event.dataTransfer.dropEffect == "move")
       event.preventDefault();      
   }        
   
-  function onDrop(event){                                
+  function onDrop(event) {                                
     var file = event.dataTransfer.files[0];      
            
     var imageType = /image.*/;
@@ -48,7 +48,8 @@
              
     var reader = new FileReader();    
     
-    reader.onload = (function(aFile){return function(e) {         
+    reader.onload = (function(aFile) {
+      return function(e) {         
         var result = e.target.result;  
         if(isImage){
           dropImage.src = result;
@@ -57,22 +58,19 @@
           dropImage.style.height = '100%';
           
           dropBox.appendChild(dropImage);
-         }
-         else{
+        } else {
            dropBox.innerHTML = result;
-           //display:block; width:198px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
            dropBox.style.display = 'block';
            dropBox.style.overflow = 'hidden';
-           
-         }        
-        };
-      })(file);
+        }        
+      };
+    })(file);
       
-    if(isImage){ reader.readAsDataURL(file); }
+    if(isImage) { reader.readAsDataURL(file); }
     else { reader.readAsText(file,"EUC-KR"); }
     
     event.stopPropagation();
-    event.preventDefault(); 
+    event.preventDefault();
   }                      
   
   dropImage.addEventListener("load", function(e) { }, true);   
