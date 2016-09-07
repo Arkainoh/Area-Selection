@@ -123,18 +123,15 @@
 	    }
     	
     	function moveArea() { //Move the selected area
-    		//var x3 = x2 - x1; //difference (delta x)
-    		//var y3 = y2 - y1; //difference (delta y)
-    		
+
     		//window.alert("startpoint: " + x1 +"," +y1 +"\nnewpoint: "+x2 +"," +y2);
     		//var leftValue = currentElement.style.left.replace('px','');
     		var leftValue = parseInt(currentElement.style.left);
     		var topValue = parseInt(currentElement.style.top);
 
     		currentElement.style.left = x2 - initXdiff + 'px';
-    		currentElement.style.top = y2 - initYdiff + 'px';
-    		
-    		//initial point로 x3와 y3를 설정하자
+    		currentElement.style.top = y2 + initYdiff + 'px';
+
     	}
     	
     	function setInitDiff() {
@@ -152,6 +149,8 @@
       	} else if(movementEnabled) {
       		x1 = e.clientX;
       		y1 = e.clientY;
+      		x2 = x1;
+      		y2 = y1;
       		setInitDiff();
       		moveArea();
       	}
@@ -162,7 +161,6 @@
 	        y2 = e.clientY;
 	        setBox();
       	} else if(movementEnabled && isDragging) {
-      		
       		x2 = e.clientX;
       		y2 = e.clientY;
       		moveArea();
