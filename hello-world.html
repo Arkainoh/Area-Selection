@@ -4,7 +4,7 @@
 	<head>
 			
 		<meta charset="utf-8">
-		<title>Area Selection</title>
+		<title>Dragger</title>
 
 		<script src="//code.jquery.com/jquery.min.js"></script>
 		
@@ -12,8 +12,9 @@
 
 	<body>
 		
-		<input type="button" id="enableSelectionButton" value="SELECT" onclick="enableAreaSelection('enableSelectionButton')">
-		<input type="button" id="enableMovementButton" value="MOVE" onclick="enableAreaMovement('enableMovementButton')">
+		<input type="button" id="SelectionButton" value="SELECT" onclick="enableAreaSelection('SelectionButton')">
+		<input type="button" id="MovementButton" value="MOVE" onclick="enableAreaMovement('MovementButton')">
+		<input type="button" id="DeletionButton" value="DELETE" onclick="enableAreaDeletion('DeletionButton')">
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
@@ -72,19 +73,29 @@
 	    // onDrop end                    
   		
   		//dropImage.addEventListener("load", function(e) { }, true);
-			var selectionEnabled = false; //flag value
+			
+			//flag values
+			var selectionEnabled = false;
     	var movementEnabled = false;
+    	var deletionEnabled = false;
+    	
     	var isDragging = false; //check if the user is dragging something
     	
 	    function enableAreaSelection(buttonID) {
-	    	if(!movementEnabled) {
+	    	if(!movementEnabled && !deletionEnabled) {
 		      selectionEnabled = selectionEnabled ? false : true; //toggle flag
 		      //activate the button (toggling)
 	    	}
 	    }
 	    function enableAreaMovement(buttonID) {
-	    	if(!selectionEnabled) {
+	    	if(!selectionEnabled && !deletionEnabled) {
 	    		movementEnabled = movementEnabled ? false : true; //toggle flag
+	    		//activate the button (toggling)
+	    	}
+	    }
+	    function enableAreaDeletion(buttonID) {
+	    	if(!selectionEnabled && !movementEnabled) {
+	    		deletionEnabled = deletionEnabled ? false : true;
 	    		//activate the button (toggling)
 	    	}
 	    }
