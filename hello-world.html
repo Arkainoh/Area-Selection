@@ -17,7 +17,7 @@
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)'/>");
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
   		
 			function onDragEnter(event) {
       	//if (event.dataTransfer.dropEffect == "move")
@@ -68,12 +68,13 @@
 		    else { reader.readAsText(file,"EUC-KR"); }
 			    event.stopPropagation();
 			    event.preventDefault();
-	    }                      
-  		// onDrop end
+	    }
+	    // onDrop end                    
+  		
   		//dropImage.addEventListener("load", function(e) { }, true);
-			//
 			var selectionEnabled = false; //flag value
     	var movementEnabled = false;
+    	var isDragging = false; //check if the user is dragging something
     	
 	    function enableAreaSelection(buttonID) {
 	    	if(!movementEnabled) {
@@ -85,11 +86,24 @@
 	    	if(!selectionEnabled) {
 	    		movementEnabled = movementEnabled ? false : true; //toggle flag
 	    		//activate the button (toggling)
-	    		window.alert("movementEnabled: "+movementEnabled);
 	    	}
 	    }
 	    
-			var box = document.getElementById('selection'), x1 = 0, y1 = 0, x2 = 0, y2 = 0, boxWidth = 0, boxHeight = 0;
+			var box = document.getElementById('selection'),
+			x1 = 0, y1 = 0, x2 = 0, y2 = 0,
+			boxWidth = 0, boxHeight = 0,
+			initXdiff = 0, initYdiff = 0;
+			var currentElement = null;
+			
+			function setCurrentElement(element) {
+				
+				if(!isDragging && movementEnabled) {
+					if(element != null);
+					else window.alert('current is null');
+				  currentElement = element;
+				}
+			}
+			
 	    function setBox() { //Resize the box
         var x3 = Math.min(x1,x2);
         var x4 = Math.max(x1,x2);
@@ -102,13 +116,34 @@
         box.style.width = boxWidth + 'px';
         box.style.height = boxHeight + 'px';
 	    }
-    
+    	
+    	function moveArea() { //Move the selected area
+    		var leftValue = parseInt(currentElement.style.left);
+    		var topValue = parseInt(currentElement.style.top);
+
+    		currentElement.style.left = x2 - initXdiff + 'px';
+    		currentElement.style.top = y2 + initYdiff + 'px';
+    	}
+    	
+    	function setInitDiff() {
+    		initXdiff = x1 - parseInt(currentElement.style.left);
+    		initYdiff = parseInt(currentElement.style.top) - y1;
+    	}
       onmousedown = function(e) {
+      	isDragging = true; //hold
       	if(selectionEnabled) {
 	        box.hidden = 0;
 	        x1 = e.clientX;
 	        y1 = e.clientY;
 	        setBox();
+	        
+      	} else if(movementEnabled) {
+      		x1 = e.clientX;
+      		y1 = e.clientY;
+      		x2 = x1;
+      		y2 = y1;
+      		setInitDiff();
+      		moveArea();
       	}
       };
       onmousemove = function(e) {
@@ -116,9 +151,17 @@
 	        x2 = e.clientX;
 	        y2 = e.clientY;
 	        setBox();
+      	} else if(movementEnabled && isDragging) {
+      		x2 = e.clientX;
+      		y2 = e.clientY;
+      		moveArea();
       	}
       };
       onmouseup = function(e) {
+      	
+      	isDragging = false; //release
+      	
+      	//window.alert('mouseup!');
         if(selectionEnabled) {
         	box.hidden = 1;
         	
@@ -131,8 +174,10 @@
 	        	img_area.hidden = 0;
 	        	selectionEnabled = false;
 	        	imgID++;
-	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)'/>"); // Create a new empty image
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>"); // Create a new empty image
         	}
+        } else if(movementEnabled) {
+        	currentElement = null;
         }
       };
     
