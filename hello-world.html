@@ -17,7 +17,7 @@
 		<div class="AreaSelection"></div>
 		<script>
 			var imgID = 1;
-			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false'/>");
+			$('.AreaSelection').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
   		
 			function onDragEnter(event) {
       	//if (event.dataTransfer.dropEffect == "move")
@@ -52,7 +52,6 @@
 		        var result = e.target.result;  
 		        if(isImage) {
 		          dropSpot.src = result;
-		          dropSpot.ondragstart="return false";
 		        } else if(isText) {
 		        	 //dropSpot.src = null;
 		           //dropSpot.innerHTML = result;
@@ -69,10 +68,10 @@
 		    else { reader.readAsText(file,"EUC-KR"); }
 			    event.stopPropagation();
 			    event.preventDefault();
-	    }                      
-  		// onDrop end
+	    }
+	    // onDrop end                    
+  		
   		//dropImage.addEventListener("load", function(e) { }, true);
-			//
 			var selectionEnabled = false; //flag value
     	var movementEnabled = false;
     	var isDragging = false; //check if the user is dragging something
@@ -87,7 +86,6 @@
 	    	if(!selectionEnabled) {
 	    		movementEnabled = movementEnabled ? false : true; //toggle flag
 	    		//activate the button (toggling)
-	    		window.alert("movementEnabled: "+movementEnabled);
 	    	}
 	    }
 	    
@@ -103,9 +101,6 @@
 					if(element != null);
 					else window.alert('current is null');
 				  currentElement = element;
-					
-					//x1 = 0;
-					//y1 = 0; //이부분을 마우스 포인터의 위치로 바꾸자
 				}
 			}
 			
@@ -123,15 +118,11 @@
 	    }
     	
     	function moveArea() { //Move the selected area
-
-    		//window.alert("startpoint: " + x1 +"," +y1 +"\nnewpoint: "+x2 +"," +y2);
-    		//var leftValue = currentElement.style.left.replace('px','');
     		var leftValue = parseInt(currentElement.style.left);
     		var topValue = parseInt(currentElement.style.top);
 
     		currentElement.style.left = x2 - initXdiff + 'px';
     		currentElement.style.top = y2 + initYdiff + 'px';
-
     	}
     	
     	function setInitDiff() {
@@ -183,7 +174,7 @@
 	        	img_area.hidden = 0;
 	        	selectionEnabled = false;
 	        	imgID++;
-	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false'/>"); // Create a new empty image
+	        	$('.AreaSelection').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>"); // Create a new empty image
         	}
         } else if(movementEnabled) {
         	currentElement = null;
