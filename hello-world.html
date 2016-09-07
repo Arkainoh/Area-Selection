@@ -4,7 +4,7 @@
 	<head>
 			
 		<meta charset="utf-8">
-		<title>Dragger</title>
+		<title>Dragoon</title>
 
 		<script src="//code.jquery.com/jquery.min.js"></script>
 		
@@ -107,10 +107,11 @@
 			var currentElement = null;
 			
 			function setCurrentElement(element) {
-				if(!isDragging && movementEnabled) {
+				if(!isDragging && (movementEnabled || deletionEnabled)) {
 					if(element != null)
 					  currentElement = element;
 				}
+				
 			}
 			
 	    function setBox() { //Resize the box
@@ -134,6 +135,11 @@
     		currentElement.style.top = y2 + initYdiff + 'px';
     	}
     	
+    	function removeArea() { //Remove the selected area
+				if(currentElement != null) currentElement.remove();
+				else window.alert("null element cannot be removed.");
+    	}
+    	
     	function setInitDiff() {
     		initXdiff = x1 - parseInt(currentElement.style.left);
     		initYdiff = parseInt(currentElement.style.top) - y1;
@@ -153,6 +159,8 @@
       		y2 = y1;
       		setInitDiff();
       		moveArea();
+      	} else if(deletionEnabled) {
+      		removeArea();
       	}
       };
       onmousemove = function(e) {
@@ -170,7 +178,6 @@
       	
       	isDragging = false; //release
       	
-      	//window.alert('mouseup!');
         if(selectionEnabled) {
         	box.hidden = 1;
         	
