@@ -25,21 +25,21 @@ On your view file (HTML based), Attach a <div\> tag with 'dragonit' class at the
 <br> Then, paste `<script src="dragonit.js"></script>` at the end of the <body\> tag.
 <br>
 <br>For example,
-> <body\> <br>
-> <div class="dragonit"\></div\><br>
+> \<body\> <br>
+> \<div class="dragonit"\>\</div\><br>
 > <br> Your code here... <br>
-> <br> <script src="dragonit.js"\></script\>
-> <br></body\>
+> <br> \<script src="dragonit.js"\>\</script\>
+> <br>\</body\>
 
 Now, you need to add event controllers on your page. It can be done simply by adding 3 buttons with class name 'dragonit_select', 'dragonit_move', 'dragonit_delete'.
 
 For example,
 
-> <button type="button" class="dragonit_select"\>select</button\><br>
+> \<button type="button" class="dragonit_select"\>select\</button\><br>
 > 
-> <button type="button" class="dragonit_move"\>move</button\><br>
+> \<button type="button" class="dragonit_move"\>move\</button\><br>
 > 
-> <button type="button" class="dragonit_delete"\>delete</button\><br>
+> \<button type="button" class="dragonit_delete"\>delete\</button\><br>
 
 
 You are ready to use Dragonit!
