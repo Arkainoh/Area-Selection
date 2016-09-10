@@ -1,10 +1,19 @@
-
+//<!-- element.classList.add("otherclass"); 이거 쓰자-->
+//<!-- ELEMENT.classList.remove("CLASS_NAME"); 이것도-->
 var imgID = 1;
 $('.dragonit').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
+var selectBtn = document.getElementsByClassName('dragonit_select')[0];
+var moveBtn = document.getElementsByClassName('dragonit_move')[0];
+var deleteBtn = document.getElementsByClassName('dragonit_delete')[0];
+
+selectBtn.onclick = function() { enableAreaSelection(); }
+moveBtn.onclick = function() { enableAreaMovement(); }
+deleteBtn.onclick = function() { enableAreaDeletion(); }
+/*
 document.getElementsByClassName('dragonit_select')[0].onclick = function() { enableAreaSelection(); }
 document.getElementsByClassName('dragonit_move')[0].onclick = function() { enableAreaMovement(); }
 document.getElementsByClassName('dragonit_delete')[0].onclick = function() { enableAreaDeletion(); }
-
+*/
 function onDragEnter(event) {
 	//if (event.dataTransfer.dropEffect == "move")
   event.preventDefault();
