@@ -1,6 +1,11 @@
 var imgURL = "https://3.bp.blogspot.com/-kZRpI3fhiUw/V9O148zMrPI/AAAAAAAAAkk/hchvABHkly4-TpD__gV9kuqbkl7ETJZrQCLcB/s400/DefaultImage.jpg";
 var imgID = 1;
 $('.dragonit').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='"+imgURL+"' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
+
+function selectnono() {
+  window.alert('nono!');
+}
+
 var selectBtn = document.getElementsByClassName('dragonit_select')[0];
 var moveBtn = document.getElementsByClassName('dragonit_move')[0];
 var deleteBtn = document.getElementsByClassName('dragonit_delete')[0];
@@ -191,6 +196,7 @@ onmouseup = function(e) {
     	toggleAreaSelection();
     	imgID++;
     	$('.dragonit').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='"+imgURL+"' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>"); // Create a new empty image
+    	currentElement = null;
   	}
   } else if(movementEnabled) {
   	currentElement = null;
