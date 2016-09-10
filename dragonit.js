@@ -140,8 +140,10 @@ function removeArea() { //Remove the selected area
 }
 
 function setInitDiff() {
-	initXdiff = x1 - parseInt(currentElement.style.left);
-	initYdiff = parseInt(currentElement.style.top) - y1;
+  if(currentElement != null) {
+  	initXdiff = x1 - parseInt(currentElement.style.left);
+  	initYdiff = parseInt(currentElement.style.top) - y1;
+  }
 }
 onmousedown = function(e) {
 	isDragging = true; //hold
