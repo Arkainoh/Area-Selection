@@ -6,14 +6,10 @@ var selectBtn = document.getElementsByClassName('dragonit_select')[0];
 var moveBtn = document.getElementsByClassName('dragonit_move')[0];
 var deleteBtn = document.getElementsByClassName('dragonit_delete')[0];
 
-selectBtn.onclick = function() { enableAreaSelection(); }
-moveBtn.onclick = function() { enableAreaMovement(); }
-deleteBtn.onclick = function() { enableAreaDeletion(); }
-/*
-document.getElementsByClassName('dragonit_select')[0].onclick = function() { enableAreaSelection(); }
-document.getElementsByClassName('dragonit_move')[0].onclick = function() { enableAreaMovement(); }
-document.getElementsByClassName('dragonit_delete')[0].onclick = function() { enableAreaDeletion(); }
-*/
+selectBtn.onclick = function() { toggleAreaSelection(); }
+moveBtn.onclick = function() { toggleAreaMovement(); }
+deleteBtn.onclick = function() { toggleAreaDeletion(); }
+
 function onDragEnter(event) {
 	//if (event.dataTransfer.dropEffect == "move")
   event.preventDefault();
@@ -75,22 +71,30 @@ var deletionEnabled = false;
 
 var isDragging = false; //check if the user is dragging something
 
-function enableAreaSelection() {
+function toggleAreaSelection() {
 	if(!movementEnabled && !deletionEnabled) {
     selectionEnabled = selectionEnabled ? false : true; //toggle flag
     //activate the button (toggling)
+    if(selectionEnabled) selectBtn.classList.add('active');
+    else selectBtn.classList.remove('active');
 	}
 }
-function enableAreaMovement() {
+
+function toggleAreaMovement() {
 	if(!selectionEnabled && !deletionEnabled) {
 		movementEnabled = movementEnabled ? false : true; //toggle flag
 		//activate the button (toggling)
+		if(movementEnabled)	moveBtn.classList.add('active');
+		else moveBtn.classList.remove('active');
 	}
 }
-function enableAreaDeletion() {
+
+function toggleAreaDeletion() {
 	if(!selectionEnabled && !movementEnabled) {
 		deletionEnabled = deletionEnabled ? false : true;
 		//activate the button (toggling)
+		if(deletionEnabled) deleteBtn.classList.add('active');
+		else deleteBtn.classList.remove('active');
 	}
 }
 
@@ -105,7 +109,6 @@ function setCurrentElement(element) {
 		if(element != null)
 		  currentElement = element;
 	}
-	
 }
 
 function setBox() { //Resize the box
@@ -131,7 +134,7 @@ function moveArea() { //Move the selected area
 
 function removeArea() { //Remove the selected area
 	if(currentElement != null) currentElement.remove();
-	else window.alert("null element cannot be removed.");
+	//else window.alert("null element cannot be removed.");
 }
 
 function setInitDiff() {
@@ -182,7 +185,7 @@ onmouseup = function(e) {
     	img_area.style.width = box.style.width;
     	img_area.style.height = box.style.height;
     	img_area.hidden = 0;
-    	selectionEnabled = false;
+    	toggleAreaSelection();
     	imgID++;
     	$('.dragonit').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='DefaultImage.jpg' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>"); // Create a new empty image
   	}
