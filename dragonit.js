@@ -125,11 +125,13 @@ function setBox() { //Resize the box
 }
 
 function moveArea() { //Move the selected area
-	var leftValue = parseInt(currentElement.style.left);
-	var topValue = parseInt(currentElement.style.top);
-
-	currentElement.style.left = x2 - initXdiff + 'px';
-	currentElement.style.top = y2 + initYdiff + 'px';
+  if(currentElement != null) {
+  	var leftValue = parseInt(currentElement.style.left);
+  	var topValue = parseInt(currentElement.style.top);
+  
+  	currentElement.style.left = x2 - initXdiff + 'px';
+  	currentElement.style.top = y2 + initYdiff + 'px';
+  }
 }
 
 function removeArea() { //Remove the selected area
