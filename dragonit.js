@@ -1,3 +1,6 @@
+
+/* global variables */
+
 var imgURL = "https://3.bp.blogspot.com/-kZRpI3fhiUw/V9O148zMrPI/AAAAAAAAAkk/hchvABHkly4-TpD__gV9kuqbkl7ETJZrQCLcB/s400/DefaultImage.jpg";
 var imgID = 1;
 $('.dragonit').append("<div hidden id='selection' style='background-color:#dddddd; position:absolute'></div><img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='"+imgURL+"' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
@@ -6,21 +9,35 @@ var selectBtn = document.getElementsByClassName('dragonit_select')[0];
 var moveBtn = document.getElementsByClassName('dragonit_move')[0];
 var deleteBtn = document.getElementsByClassName('dragonit_delete')[0];
 
+// flag values
+var selectionEnabled = false;
+var movementEnabled = false;
+var deletionEnabled = false;
+
+var isDragging = false; // check if the user is dragging something
+
+var box = document.getElementById('selection'),
+x1 = 0, y1 = 0, x2 = 0, y2 = 0,
+boxWidth = 0, boxHeight = 0,
+initXdiff = 0, initYdiff = 0;
+var currentElement = null;
+
+/* functions */
+
 selectBtn.onclick = function() { toggleAreaSelection(); }
 moveBtn.onclick = function() { toggleAreaMovement(); }
 deleteBtn.onclick = function() { toggleAreaDeletion(); }
 
 function onDragEnter(event) {
-	//if (event.dataTransfer.dropEffect == "move")
+	// if (event.dataTransfer.dropEffect == "move")
 	event.preventDefault();
 }
 
 function onDragOver(event) {
-	//if (event.dataTransfer.dropEffect == "move")
+	// if (event.dataTransfer.dropEffect == "move")
 	event.preventDefault();
 }
 
-// onDrop start
 function onDrop(event) {																
 	var file = event.dataTransfer.files[0];			
 
@@ -45,12 +62,14 @@ function onDrop(event) {
 			var result = e.target.result;	
 			if(isImage) {
 				dropSpot.src = result;
+
 			} else if(isText) {
-				//dropSpot.src = null;
-				//dropSpot.innerHTML = result;
-				//dropSpot.style.display = 'block';
-				//dropSpot.style.overflow = 'hidden';
+				// dropSpot.src = null;
+				// dropSpot.innerHTML = result;
+				// dropSpot.style.display = 'block';
+				// dropSpot.style.overflow = 'hidden';
 				window.alert('You dragged a text file!');
+
 			} else {
 				window.alert('Only allows image or text file.');
 			}
@@ -63,28 +82,13 @@ function onDrop(event) {
 	event.stopPropagation();
 	event.preventDefault();
 }
-// onDrop end										
-
-//dropImage.addEventListener("load", function(e) { }, true);
-
-//flag values
-var selectionEnabled = false;
-var movementEnabled = false;
-var deletionEnabled = false;
-
-var isDragging = false; //check if the user is dragging something
-
-var box = document.getElementById('selection'),
-x1 = 0, y1 = 0, x2 = 0, y2 = 0,
-boxWidth = 0, boxHeight = 0,
-initXdiff = 0, initYdiff = 0;
-var currentElement = null;
+// dropImage.addEventListener("load", function(e) { }, true);
 
 function toggleAreaSelection() {
 	if(!movementEnabled && !deletionEnabled) {
 		selectionEnabled = selectionEnabled ? false : true; //toggle flag
 
-		//activate the button (toggling)
+		// activate the button (toggling)
 		if(selectionEnabled) selectBtn.classList.add('active');
 		else selectBtn.classList.remove('active');
 	}
@@ -94,7 +98,7 @@ function toggleAreaMovement() {
 	if(!selectionEnabled && !deletionEnabled) {
 		movementEnabled = movementEnabled ? false : true; //toggle flag
 
-		//activate the button (toggling)
+		// activate the button (toggling)
 		if(movementEnabled)	moveBtn.classList.add('active');
 		else moveBtn.classList.remove('active');
 	}
@@ -103,7 +107,8 @@ function toggleAreaMovement() {
 function toggleAreaDeletion() {
 	if(!selectionEnabled && !movementEnabled) {
 		deletionEnabled = deletionEnabled ? false : true;
-		//activate the button (toggling)
+
+		// activate the button (toggling)
 		if(deletionEnabled) deleteBtn.classList.add('active');
 		else deleteBtn.classList.remove('active');
 	}
@@ -116,7 +121,7 @@ function setCurrentElement(element) {
 	}
 }
 
-function setBox() { //Resize the box
+function setBox() { // resize the box
 	var x3 = Math.min(x1,x2);
 	var x4 = Math.max(x1,x2);
 	var y3 = Math.min(y1,y2);
@@ -129,7 +134,7 @@ function setBox() { //Resize the box
 	box.style.height = boxHeight + 'px';
 }
 
-function moveArea() { //Move the selected area
+function moveArea() { // move the selected area
 	if(currentElement != null) {
 		var leftValue = parseInt(currentElement.style.left);
 		var topValue = parseInt(currentElement.style.top);
@@ -139,9 +144,9 @@ function moveArea() { //Move the selected area
 	}
 }
 
-function removeArea() { //Remove the selected area
+function removeArea() { // remove the selected area
 	if(currentElement != null) currentElement.remove();
-	//else window.alert("null element cannot be removed.");
+	// else window.alert("null element cannot be removed.");
 }
 
 function setInitDiff() {
@@ -152,7 +157,7 @@ function setInitDiff() {
 }
 
 onmousedown = function(e) {
-	isDragging = true; //hold
+	isDragging = true; // hold
 	if(selectionEnabled) {
 		box.hidden = 0;
 		x1 = e.clientX;
@@ -166,6 +171,7 @@ onmousedown = function(e) {
 		y2 = y1;
 		setInitDiff();
 		moveArea();
+
 	} else if(deletionEnabled) {
 		removeArea();
 	}
@@ -173,9 +179,10 @@ onmousedown = function(e) {
 
 onmousemove = function(e) {
 	if(selectionEnabled) {
-	x2 = e.clientX;
-	y2 = e.clientY;
-	setBox();
+		x2 = e.clientX;
+		y2 = e.clientY;
+		setBox();
+
 	} else if(movementEnabled && isDragging) {
 		x2 = e.clientX;
 		y2 = e.clientY;
@@ -185,7 +192,7 @@ onmousemove = function(e) {
 
 onmouseup = function(e) {
 	
-	isDragging = false; //release
+	isDragging = false; // release
 	
 	if(selectionEnabled) {
 		box.hidden = 1;
@@ -199,10 +206,11 @@ onmouseup = function(e) {
 			img_area.hidden = 0;
 			toggleAreaSelection();
 			imgID++;
-			// Create a new empty image
+			// create a new empty image
 			$('.dragonit').append("<img hidden id='imgReady"+imgID+"' style='position:absolute;border-radius:10px' src='"+imgURL+"' ondragenter='onDragEnter(event)' ondragover='onDragOver(event)' ondrop='onDrop(event)' onmousedown='setCurrentElement(this)' ondragstart='return false' onselectstart='return false'/>");
 			currentElement = null;
 		}
+
 	} else if(movementEnabled) {
 		currentElement = null;
 	}
