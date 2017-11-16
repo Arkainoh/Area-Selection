@@ -1,4 +1,4 @@
-# Dragonit
+# dragonit
 
 #### Abstract:
 A simple front-end project using HTML5's Drag and Drop APIs. <br>
@@ -6,8 +6,8 @@ It makes users be able to design or simulate view files of Web projects based on
 
 ----
 #### Demo:
-Web Page: [https://dragonit-demo.herokuapp.com/](https://dragonit-demo.herokuapp.com/)<br>
-Demo Video: [https://youtu.be/33aFSZ3yvTE](https://youtu.be/33aFSZ3yvTE)
+Web: [https://dragonit-demo.herokuapp.com/](https://dragonit-demo.herokuapp.com/)<br>
+Video: [https://youtu.be/33aFSZ3yvTE](https://youtu.be/33aFSZ3yvTE)
 
 ----
 #### Documentation (Korean):
@@ -41,10 +41,9 @@ For example,
 > 
 > \<button type="button" class="dragonit_delete"\>delete\</button\><br>
 
+You are ready to use dragonit!
 
-You are ready to use Dragonit!
-
-#####For Rails:
+#### For Rails:
 
 Attach `<%= javascript_include_tag "dragonit" %>` instead of `<script src="dragonit.js"></script>`. <br><br>
 Add `Rails.application.config.assets.precompile += %w( dragonit.js )` to /config/initializers/assets.rb
